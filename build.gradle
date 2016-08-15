@@ -2,6 +2,17 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://jcenter.bintray.com" }
+    }
+    dependencies {
+        classpath group: 'com.blackducksoftware.integration', name: 'hub-gradle-plugin', version: '2.0.6'
+    }
+}
+apply plugin: 'com.blackducksoftware.hub'
+
+buildscript {
   apply from: file('shared_versions.gradle')
 
   repositories {
@@ -433,3 +444,20 @@ class TimingsListener implements TaskExecutionListener, BuildListener, org.gradl
 }
 
 gradle.addListener new TimingsListener()
+
+createHubOutput {
+    outputDirectory = "/var/lib/jenkins/jobs/uaa/workspace"
+}
+
+deployHubOutput {
+  outputDirectory = "/var/lib/jenkins/jobs/uaa/workspace"
+  hubUrl = "https://hub-beta.blackducksoftware.com"
+    hubUsername = "sysadmin"
+    hubPassword = "blackduck"
+    hubTimeout = "120"
+    hubProxyHost = ""
+    hubProxyPort = ""
+    hubNoProxyHosts = ""
+    hubProxyUsername = ""
+    hubProxyPassword = ""
+}
